@@ -22,3 +22,6 @@ Thumbs.db
 *.classpath
 *.project
 *.settings/
+
+# ignore sensitive Spring Boot configs
+/src/main/resources/application.properties
