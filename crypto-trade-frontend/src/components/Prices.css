@@ -1,0 +1,17 @@
+.prices-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.prices-table th,
+.prices-table td {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.prices-table th {
+  background-color: #222;
+  color: white;
+}

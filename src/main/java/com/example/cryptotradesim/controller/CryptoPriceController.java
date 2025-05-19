@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/prices")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class CryptoPriceController {
 
     @GetMapping
