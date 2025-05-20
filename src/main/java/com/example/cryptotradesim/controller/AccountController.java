@@ -29,6 +29,7 @@ public class AccountController {
 
     @PostMapping("/sell")
     public String sell(@RequestBody SellRequestDTO request) {
+        System.out.println(">>> SELL: " + request.getSymbol() + " $" + request.getAmountUSD());
         return accountService.sell(request);
     }
 

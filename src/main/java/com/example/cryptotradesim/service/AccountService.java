@@ -77,19 +77,21 @@ public class AccountService {
 
     public String sell(SellRequestDTO request) {
         String symbol = request.getSymbol().toUpperCase();
-        double amountToSell = request.getAmount();
+        double amountUSD = request.getAmountUSD();
 
         if (!mockPrices.containsKey(symbol)) {
             return "❌ Unsupported crypto: " + symbol;
         }
 
+        double price = mockPrices.get(symbol);
+        if (price <= 0) return "❌ Invalid price for: " + symbol;
+
+        double amountToSell = amountUSD / price;
+
         Optional<Holding> optional = holdingRepository.findBySymbol(symbol);
         if (optional.isEmpty() || optional.get().getAmount() < amountToSell) {
             return "❌ Not enough " + symbol + " to sell.";
         }
-
-        double price = mockPrices.get(symbol);
-        double usdEarned = amountToSell * price;
 
         Holding holding = optional.get();
         holding.subtractAmount(amountToSell);
@@ -101,13 +103,14 @@ public class AccountService {
         }
 
         Account account = accountRepository.findAll().get(0);
-        account.setBalanceUSD(account.getBalanceUSD() + usdEarned);
+        account.setBalanceUSD(account.getBalanceUSD() + amountUSD);
         accountRepository.save(account);
 
-        transactionRepository.save(new Transaction("SELL", symbol, amountToSell, price, usdEarned));
+        transactionRepository.save(new Transaction("SELL", symbol, amountToSell, price, amountUSD));
 
-        return String.format("✅ Sold %.6f %s for $%.2f", amountToSell, symbol, usdEarned);
+        return String.format("✅ Sold %.6f %s for $%.2f", amountToSell, symbol, amountUSD);
     }
+
 
     public List<Holding> getHoldings() {
         return holdingRepository.findAll();
