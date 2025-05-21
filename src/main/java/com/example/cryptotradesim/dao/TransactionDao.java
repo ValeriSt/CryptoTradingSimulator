@@ -41,4 +41,8 @@ public class TransactionDao {
     public List<Transaction> findAll() {
         return jdbcTemplate.query("SELECT * FROM transaction ORDER BY timestamp DESC", rowMapper);
     }
+
+    public void deleteAll() {
+        jdbcTemplate.update("DELETE FROM transaction");
+    }
 }

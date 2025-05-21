@@ -3,6 +3,8 @@ import AccountInfo from "./components/AccountInfo";
 import Prices from "./components/Prices";
 import BuyForm from "./components/BuyForm";
 import SellForm from "./components/SellForm";
+import TransactionHistory from "./components/TransactionHistory";
+import ResetButton from "./components/ResetButton";
 import { useState } from "react";
 
 function App() {
@@ -17,6 +19,9 @@ function App() {
       <SellForm onSellSuccess={triggerRefresh} />
       <AccountInfo key={refreshKey} />
       <Prices />
+
+      <TransactionHistory refreshTrigger={refreshKey}/>
+      <ResetButton onReset={triggerRefresh} />
     </div>
   );
 }

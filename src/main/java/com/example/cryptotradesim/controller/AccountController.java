@@ -6,6 +6,7 @@ import com.example.cryptotradesim.model.Holding;
 import com.example.cryptotradesim.model.Transaction;
 import com.example.cryptotradesim.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -41,6 +42,12 @@ public class AccountController {
     @GetMapping("/transactions")
     public List<Transaction> getTransactions() {
         return accountService.getTransactions();
+    }
+
+    @DeleteMapping("/reset")
+    public ResponseEntity<String> resetAccount() {
+        accountService.resetAccount();
+        return ResponseEntity.ok("Account reset to $10,000 and all data cleared.");
     }
 
 }

@@ -55,4 +55,9 @@ public class HoldingDao {
     public List<Holding> findAll() {
         return jdbcTemplate.query("SELECT * FROM holding", rowMapper);
     }
+
+    public void deleteAll() {
+        jdbcTemplate.update("DELETE FROM holding");
+    }
+
 }

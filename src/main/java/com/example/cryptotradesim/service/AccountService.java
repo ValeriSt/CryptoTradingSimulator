@@ -120,4 +120,10 @@ public class AccountService {
     public List<Transaction> getTransactions() {
         return transactionDao.findAll();
     }
+
+    public void resetAccount() {
+        accountDao.updateBalance(10000.0);
+        holdingDao.deleteAll();
+        transactionDao.deleteAll();
+    }
 }

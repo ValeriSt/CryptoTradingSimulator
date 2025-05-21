@@ -32,6 +32,7 @@ const handleBuy = async (e) => {
     alert(await res.text());
 
     form.reset();
+    onBuySuccess?.();
   } catch (err) {
     console.error("Buy failed:", err);
     alert("Error buying crypto.");
