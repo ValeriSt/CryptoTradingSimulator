@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function BuyForm({ onBuySuccess }) {
+function BuyForm({ symbols, onBuySuccess }) {
   const [symbol, setSymobl] = useState("BTC");
   const [amountUSD, setAmountUSD] = useState("");
 
@@ -41,24 +41,18 @@ const handleBuy = async (e) => {
 
 
   return (
-<form onSubmit={handleBuy}>
-  <label>
-    Symbol:{" "}
-    <select name="symbol" defaultValue="BTC">
-      <option value="BTC">BTC</option>
-      <option value="ETH">ETH</option>
-      <option value="SOL">SOL</option>
-    </select>
-  </label>
-
-  <label>
-    USD Amount:{" "}
-    <input name="amountUSD" type="number" />
-  </label>
-
-  <button type="submit">Buy</button>
-</form>
-
+ <form onSubmit={handleBuy}>
+      <label>
+        Symbol:
+        <select name="symbol" defaultValue={symbols[0]}>
+          {symbols.map((s) => (
+            <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+      </label>
+      <input name="amountUSD" type="number" placeholder="Enter USD amount" />
+      <button type="submit">Buy</button>
+    </form>
   );
 }
 

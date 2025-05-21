@@ -22,20 +22,17 @@ public class AccountService {
     private final AccountDao accountDao;
     private final HoldingDao holdingDao;
     private final TransactionDao transactionDao;
-
-    private final Map<String, Double> mockPrices = Map.of(
-            "BTC", 64000.0,
-            "ETH", 3200.0,
-            "SOL", 140.0
-    );
+    private final CryptoPriceWebSocketClient priceClient;
 
     @Autowired
     public AccountService(AccountDao accountDao,
                           HoldingDao holdingDao,
-                          TransactionDao transactionDao) {
+                          TransactionDao transactionDao,
+                          CryptoPriceWebSocketClient priceClient) {
         this.accountDao = accountDao;
         this.holdingDao = holdingDao;
         this.transactionDao = transactionDao;
+        this.priceClient = priceClient;
     }
 
     @PostConstruct
@@ -53,8 +50,10 @@ public class AccountService {
         String symbol = request.getSymbol().toUpperCase();
         double amountUSD = request.getAmountUSD();
 
-        if (!mockPrices.containsKey(symbol)) {
-            return "Unsupported crypto: " + symbol;
+        Double price = priceClient.getLivePrices().get(symbol);
+
+        if (price == null || price <= 0) {
+            return "Price for " + symbol + " not available.";
         }
 
         Account account = accountDao.getMainAccount();
@@ -62,7 +61,6 @@ public class AccountService {
             return "Not enough balance.";
         }
 
-        double price = mockPrices.get(symbol);
         double amountToBuy = amountUSD / price;
 
         account.setBalanceUSD(account.getBalanceUSD() - amountUSD);
@@ -81,12 +79,11 @@ public class AccountService {
         String symbol = request.getSymbol().toUpperCase();
         double amountUSD = request.getAmountUSD();
 
-        if (!mockPrices.containsKey(symbol)) {
-            return "Unsupported crypto: " + symbol;
-        }
+        Double price = priceClient.getLivePrices().get(symbol);
 
-        double price = mockPrices.get(symbol);
-        if (price <= 0) return "nvalid price for: " + symbol;
+        if (price == null || price <= 0) {
+            return "Price for " + symbol + " not available.";
+        }
 
         double amountToSell = amountUSD / price;
 

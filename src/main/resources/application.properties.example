@@ -1,0 +1,13 @@
+# src/main/resources/application.properties.example
+
+spring.application.name=CryptoTradeSim
+server.port=5000
+
+# Database
+spring.datasource.url=jdbc:postgresql://localhost:5432/crypto_trading_sim
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+
+spring.sql.init.mode=always
+spring.sql.init.schema-locations=classpath:schema.sql
+spring.datasource.driver-class-name=org.postgresql.Driver
