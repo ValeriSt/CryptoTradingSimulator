@@ -1,13 +1,7 @@
 package com.example.cryptotradesim.model;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "holding")
 public class Holding {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String symbol;
@@ -23,9 +17,15 @@ public class Holding {
     public Long getId() {
         return id;
     }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getSymbol() {
         return symbol;
+    }
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
     public double getAmount() {

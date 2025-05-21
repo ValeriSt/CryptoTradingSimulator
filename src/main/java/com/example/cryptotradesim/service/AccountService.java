@@ -1,25 +1,27 @@
 package com.example.cryptotradesim.service;
 
+import com.example.cryptotradesim.dao.AccountDao;
+import com.example.cryptotradesim.dao.HoldingDao;
+import com.example.cryptotradesim.dao.TransactionDao;
 import com.example.cryptotradesim.dto.BuyRequestDTO;
 import com.example.cryptotradesim.dto.SellRequestDTO;
 import com.example.cryptotradesim.model.Account;
 import com.example.cryptotradesim.model.Holding;
 import com.example.cryptotradesim.model.Transaction;
-import com.example.cryptotradesim.repository.AccountRepository;
-import com.example.cryptotradesim.repository.HoldingRepository;
-import com.example.cryptotradesim.repository.TransactionRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AccountService {
 
-    private final AccountRepository accountRepository;
-    private final HoldingRepository holdingRepository;
-    private final TransactionRepository transactionRepository;
+    private final AccountDao accountDao;
+    private final HoldingDao holdingDao;
+    private final TransactionDao transactionDao;
 
     private final Map<String, Double> mockPrices = Map.of(
             "BTC", 64000.0,
@@ -28,23 +30,23 @@ public class AccountService {
     );
 
     @Autowired
-    public AccountService(AccountRepository accountRepository,
-                          HoldingRepository holdingRepository,
-                          TransactionRepository transactionRepository) {
-        this.accountRepository = accountRepository;
-        this.holdingRepository = holdingRepository;
-        this.transactionRepository = transactionRepository;
+    public AccountService(AccountDao accountDao,
+                          HoldingDao holdingDao,
+                          TransactionDao transactionDao) {
+        this.accountDao = accountDao;
+        this.holdingDao = holdingDao;
+        this.transactionDao = transactionDao;
     }
 
     @PostConstruct
     public void init() {
-        if (accountRepository.count() == 0) {
-            accountRepository.save(new Account(10000.0));
+        if (accountDao.isEmpty()) {
+            accountDao.insertInitialAccount(10000.0);
         }
     }
 
     public double getBalance() {
-        return accountRepository.findAll().get(0).getBalanceUSD();
+        return accountDao.getMainAccount().getBalanceUSD();
     }
 
     public String buy(BuyRequestDTO request) {
@@ -52,27 +54,27 @@ public class AccountService {
         double amountUSD = request.getAmountUSD();
 
         if (!mockPrices.containsKey(symbol)) {
-            return "❌ Unsupported crypto: " + symbol;
+            return "Unsupported crypto: " + symbol;
         }
 
-        Account account = accountRepository.findAll().get(0);
+        Account account = accountDao.getMainAccount();
         if (account.getBalanceUSD() < amountUSD) {
-            return "❌ Not enough balance.";
+            return "Not enough balance.";
         }
 
         double price = mockPrices.get(symbol);
         double amountToBuy = amountUSD / price;
 
         account.setBalanceUSD(account.getBalanceUSD() - amountUSD);
-        accountRepository.save(account);
+        accountDao.updateBalance(account.getBalanceUSD());
 
-        Holding holding = holdingRepository.findBySymbol(symbol).orElse(new Holding(symbol, 0));
+        Holding holding = holdingDao.findBySymbol(symbol).orElse(new Holding(symbol, 0));
         holding.addAmount(amountToBuy);
-        holdingRepository.save(holding);
+        holdingDao.save(holding);
 
-        transactionRepository.save(new Transaction("BUY", symbol, amountToBuy, price, amountUSD));
+        transactionDao.save(new Transaction("BUY", symbol, amountToBuy, price, amountUSD));
 
-        return String.format("✅ Bought %.6f %s for $%.2f", amountToBuy, symbol, amountUSD);
+        return String.format("Bought %.6f %s for $%.2f", amountToBuy, symbol, amountUSD);
     }
 
     public String sell(SellRequestDTO request) {
@@ -80,43 +82,42 @@ public class AccountService {
         double amountUSD = request.getAmountUSD();
 
         if (!mockPrices.containsKey(symbol)) {
-            return "❌ Unsupported crypto: " + symbol;
+            return "Unsupported crypto: " + symbol;
         }
 
         double price = mockPrices.get(symbol);
-        if (price <= 0) return "❌ Invalid price for: " + symbol;
+        if (price <= 0) return "nvalid price for: " + symbol;
 
         double amountToSell = amountUSD / price;
 
-        Optional<Holding> optional = holdingRepository.findBySymbol(symbol);
+        Optional<Holding> optional = holdingDao.findBySymbol(symbol);
         if (optional.isEmpty() || optional.get().getAmount() < amountToSell) {
-            return "❌ Not enough " + symbol + " to sell.";
+            return "Not enough " + symbol + " to sell.";
         }
 
         Holding holding = optional.get();
         holding.subtractAmount(amountToSell);
 
         if (holding.getAmount() <= 0.000001) {
-            holdingRepository.delete(holding);
+            holdingDao.delete(holding);
         } else {
-            holdingRepository.save(holding);
+            holdingDao.save(holding);
         }
 
-        Account account = accountRepository.findAll().get(0);
+        Account account = accountDao.getMainAccount();
         account.setBalanceUSD(account.getBalanceUSD() + amountUSD);
-        accountRepository.save(account);
+        accountDao.updateBalance(account.getBalanceUSD());
 
-        transactionRepository.save(new Transaction("SELL", symbol, amountToSell, price, amountUSD));
+        transactionDao.save(new Transaction("SELL", symbol, amountToSell, price, amountUSD));
 
-        return String.format("✅ Sold %.6f %s for $%.2f", amountToSell, symbol, amountUSD);
+        return String.format("Sold %.6f %s for $%.2f", amountToSell, symbol, amountUSD);
     }
 
-
     public List<Holding> getHoldings() {
-        return holdingRepository.findAll();
+        return holdingDao.findAll();
     }
 
     public List<Transaction> getTransactions() {
-        return transactionRepository.findAll();
+        return transactionDao.findAll();
     }
 }

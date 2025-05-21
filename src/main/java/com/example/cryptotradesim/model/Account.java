@@ -1,13 +1,8 @@
 package com.example.cryptotradesim.model;
 
-import jakarta.persistence.*;
 
-@Entity
-@Table(name = "account")
 public class Account {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private double balanceUSD;
@@ -20,6 +15,10 @@ public class Account {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public double getBalanceUSD() {
