@@ -58,6 +58,17 @@ CryptoTradingSim/
 
 ## Setup Instructions
 
+### Note on Initial Database Setup
+In some environments, running the backend with ./gradlew bootRun may cause the process to hang or freeze around 80% due to Gradle and Spring DevTools issues.
+
+If that happens:
+You can manually start the application in your IDE (e.g., IntelliJ, Eclipse, VS Code):
+
+Run CryptoTradeSimApplication.java directly via the green Run arrow
+This will correctly start the Spring Boot server and automatically initialize the database schema.
+
+Make sure your local PostgreSQL server is running (or whichever DB you use), and the application.properties (or .yml) file contains correct DB connection details.
+
 ### Backend (Spring Boot)
 
 1. Set up PostgreSQL and and use the schema.sql file.
