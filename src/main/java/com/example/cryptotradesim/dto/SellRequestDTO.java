@@ -2,7 +2,7 @@ package com.example.cryptotradesim.dto;
 
 public class SellRequestDTO {
     private String symbol;
-    private double amountUSD;
+    private double amountCrypto;
 
     public SellRequestDTO() {}
 
@@ -14,12 +14,12 @@ public class SellRequestDTO {
         this.symbol = symbol;
     }
 
-    public double getAmountUSD() {
-        return amountUSD;
+    public double getAmountCrypto() {
+        return amountCrypto;
     }
 
-    public void setAmountUSD(double amountUSD) {
-        this.amountUSD = amountUSD;
+    public void setAmountCrypto(double amountCrypto) {
+        this.amountCrypto = amountCrypto;
     }
 }
 

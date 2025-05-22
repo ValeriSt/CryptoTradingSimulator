@@ -11,6 +11,7 @@ public class Transaction {
     private double amountCrypto;
     private double pricePerUnit;
     private double totalUSD;
+    private Double profitOrLoss;
     private LocalDateTime timestamp;
 
     public Transaction() {}
@@ -21,6 +22,16 @@ public class Transaction {
         this.amountCrypto = amountCrypto;
         this.pricePerUnit = pricePerUnit;
         this.totalUSD = totalUSD;
+        this.timestamp = LocalDateTime.now();
+    }
+
+    public Transaction(String action, String symbol, double amountCrypto, double pricePerUnit, double totalUSD, Double profitOrLoss) {
+        this.action = action;
+        this.symbol = symbol;
+        this.amountCrypto = amountCrypto;
+        this.pricePerUnit = pricePerUnit;
+        this.totalUSD = totalUSD;
+        this.profitOrLoss = profitOrLoss;
         this.timestamp = LocalDateTime.now();
     }
 
@@ -64,6 +75,13 @@ public class Transaction {
     }
     public void setTotalUSD(double totalUSD) {
         this.totalUSD = totalUSD;
+    }
+
+    public Double getProfitOrLoss() {
+        return profitOrLoss;
+    }
+    public void setProfitOrLoss(Double profitOrLoss) {
+        this.profitOrLoss = profitOrLoss;
     }
 
     public LocalDateTime getTimestamp() {

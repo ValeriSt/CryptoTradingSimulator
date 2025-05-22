@@ -3,13 +3,17 @@ import "./Prices.css";
 
 function Prices() {
   const [prices, setPrices] = useState({});
+  const [previousPrices, setPreviousPrices] = useState({});
 
   useEffect(() => {
     const fetchPrices = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/prices/live");
         const data = await res.json();
-        setPrices(data);
+        setPrices((prevPrices) => {
+          setPreviousPrices(prevPrices);
+          return data;
+        });
       } catch (err) {
         console.error("Error fetching live prices:", err);
       }
@@ -38,12 +42,31 @@ function Prices() {
             </tr>
           </thead>
           <tbody>
-            {symbols.map((symbol) => (
-              <tr key={symbol}>
-                <td>{symbol}</td>
-                <td>${prices[symbol].toFixed(2)}</td>
-              </tr>
-            ))}
+            {symbols.map((symbol) => {
+              const current = prices[symbol];
+              const previous = previousPrices[symbol];
+              const diff = previous ? current - previous : 0;
+
+              let className = "";
+              if (diff > 0) className = "price-up";
+              else if (diff < 0) className = "price-down";
+              console.log(
+                `${symbol} Prev: ${previous} Curr: ${current} Diff: ${diff}`
+              );
+              return (
+                <tr key={symbol}>
+                  <td>{symbol}</td>
+                  <td className={className}>
+                    ${current.toFixed(2)}
+                    {diff !== 0 && (
+                      <span className="price-arrow">
+                        {diff > 0 ? " 🔼" : " 🔽"}
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

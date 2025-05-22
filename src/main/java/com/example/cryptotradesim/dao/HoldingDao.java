@@ -24,6 +24,7 @@ public class HoldingDao {
         h.setId(rs.getLong("id"));
         h.setSymbol(rs.getString("symbol"));
         h.setAmount(rs.getDouble("amount"));
+        h.setTotalCostUSD(rs.getDouble("total_cost_usd"));
         return h;
     };
 
@@ -37,13 +38,13 @@ public class HoldingDao {
         Optional<Holding> existing = findBySymbol(holding.getSymbol());
         if (existing.isPresent()) {
             jdbcTemplate.update(
-                    "UPDATE holding SET amount = ? WHERE symbol = ?",
-                    holding.getAmount(), holding.getSymbol()
+                    "UPDATE holding SET amount = ?, total_cost_usd = ? WHERE symbol = ?",
+                    holding.getAmount(),holding.getTotalCostUSD(), holding.getSymbol()
             );
         } else {
             jdbcTemplate.update(
-                    "INSERT INTO holding (symbol, amount) VALUES (?, ?)",
-                    holding.getSymbol(), holding.getAmount()
+                    "INSERT INTO holding (symbol, amount, total_cost_usd) VALUES (?, ?, ?)",
+                    holding.getSymbol(), holding.getAmount(), holding.getTotalCostUSD()
             );
         }
     }

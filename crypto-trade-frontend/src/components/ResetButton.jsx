@@ -1,3 +1,5 @@
+import './ResetButton.css'
+
 function ResetButton({ onReset }) {
   const handleClick = async () => {
     if (!window.confirm("Are you sure you want to reset your account?")) return;
@@ -14,7 +16,7 @@ function ResetButton({ onReset }) {
     }
   };
 
-  return <button onClick={handleClick}>Reset Account</button>;
+  return <button className="reset-button" onClick={handleClick}>Reset Account</button>;
 }
 
 export default ResetButton;

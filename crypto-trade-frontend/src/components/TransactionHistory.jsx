@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import './TransactionHistory.css'
 
-function TransactionHistory({refreshTrigger}) {
+function TransactionHistory({ refreshTrigger }) {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -21,7 +22,7 @@ function TransactionHistory({refreshTrigger}) {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
+    <div className="transaction-history" style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
       <h2>Transaction History</h2>
       {transactions.length === 0 ? (
         <p>No transactions yet.</p>
@@ -40,6 +41,7 @@ function TransactionHistory({refreshTrigger}) {
               <th>Price</th>
               <th>Total</th>
               <th>Timestamp</th>
+              <th>Profit/Loss</th>
             </tr>
           </thead>
           <tbody>
@@ -55,11 +57,19 @@ function TransactionHistory({refreshTrigger}) {
                     : "N/A"}
                 </td>
                 <td>
-                  {typeof tx.amountCrypto === "number" && typeof tx.pricePerUnit === "number"
+                  {typeof tx.amountCrypto === "number" &&
+                  typeof tx.pricePerUnit === "number"
                     ? `$${(tx.amountCrypto * tx.pricePerUnit).toFixed(2)}`
                     : "N/A"}
                 </td>
                 <td>{new Date(tx.timestamp).toLocaleString()}</td>
+                <td>
+                  {tx.action === "SELL" && typeof tx.profitOrLoss === "number"
+                    ? `$${tx.profitOrLoss.toFixed(2)}`
+                    : tx.action === "SELL"
+                    ? "N/A"
+                    : "-"}
+                </td>
               </tr>
             ))}
           </tbody>

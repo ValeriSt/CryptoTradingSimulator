@@ -1,0 +1,30 @@
+.transaction-history {
+    margin-top: 2rem;
+}
+
+.transaction-history table {
+    width: 200%;
+    border-collapse: collapse;
+}
+
+.transaction-history th,
+.transaction-history td {
+    padding: 0.5rem;
+    border: 1px solid #555;
+}
+
+.transaction-history th {
+    background-color: #2e2e2e;
+}
+
+.transaction-history td {
+    background-color: #1b1b1b;
+}
+
+.transaction-history .profit {
+    color: #00ff88;
+}
+
+.transaction-history .loss {
+    color: #ff4f4f;
+}

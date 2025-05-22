@@ -1,4 +1,4 @@
-import "./index.css";
+import "./App.css";
 import AccountInfo from "./components/AccountInfo";
 import Prices from "./components/Prices";
 import BuyForm from "./components/BuyForm";

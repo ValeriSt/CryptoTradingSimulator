@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import './SellForm.css'
 
 function SellForm({ onSellSuccess }) {
   const [symbol, setSymbol] = useState("BTC");
@@ -15,41 +16,29 @@ function SellForm({ onSellSuccess }) {
     e.preventDefault();
 
     const form = e.target;
-    const selectedSymbol = form.elements.symbol.value;
-    const amount = parseFloat(form.elements.amountUSD.value);
+    const symbol = form.symbol.value;
+    const amountCrypto = parseFloat(form.amountCrypto.value);
 
-    if (!selectedSymbol || isNaN(amount) || amount <= 0) {
-      alert("Enter a valid symbol and USD amount");
+    if (!symbol || isNaN(amountCrypto) || amountCrypto <= 0) {
+      alert("Enter a valid symbol and crypto amount");
       return;
     }
 
-    const request = {
-      symbol: selectedSymbol,
-      amountUSD: amount,
-    };
+    const res = await fetch("http://localhost:5000/api/account/sell", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ symbol, amountCrypto }),
+    });
 
-    try {
-      const res = await fetch("http://localhost:5000/api/account/sell", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(request),
-      });
-
-      const text = await res.text();
-
-      if (!res.ok) throw new Error(text);
-      alert(text);
-      form.reset();
-      if (onSellSuccess) onSellSuccess();
-    } catch (err) {
-      console.error("Fetch failed:", err.message);
-      alert("Sell failed: " + err.message);
-    }
+    const msg = await res.text();
+    alert(msg);
+    form.reset;
+    onSellSuccess?.();
   };
 
   return (
-    <form onSubmit={handleSell}>
-      <select name="symbol">
+    <form className="sell-form" onSubmit={handleSell}>
+      <select name="symbol" required>
         <option value="">-- Select --</option>
         {holdings.map((h) => (
           <option key={h.symbol} value={h.symbol}>
@@ -57,9 +46,13 @@ function SellForm({ onSellSuccess }) {
           </option>
         ))}
       </select>
-
-      <input name="amountUSD" type="number" placeholder="Enter USD" />
-
+      <input
+        name="amountCrypto"
+        type="number"
+        placeholder="Enter Crypto Amount"
+        step="any"
+        required
+      />
       <button type="submit">Sell</button>
     </form>
   );

@@ -1,17 +1,35 @@
 .prices-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
 }
 
 .prices-table th,
 .prices-table td {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  text-align: left;
+    padding: 0.5rem;
+    border: 1px solid #444;
+    text-align: left;
 }
 
 .prices-table th {
-  background-color: #222;
-  color: white;
+    background-color: #333;
+}
+
+.prices-table td {
+    background-color: #222;
+}
+
+.price-up {
+  color: #4caf50;
+  transition: color 0.3s ease;
+}
+
+.price-down {
+  color: #f44336;
+  transition: color 0.3s ease;
+}
+
+.price-arrow {
+  margin-left: 4px;
+  font-size: 0.9em;
 }

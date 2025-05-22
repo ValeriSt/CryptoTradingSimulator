@@ -6,12 +6,14 @@ public class Holding {
 
     private String symbol;
     private double amount;
+    private double totalCostUSD;
 
     public Holding() {}
 
-    public Holding(String symbol, double amount) {
+    public Holding(String symbol, double amount, double totalCostUSD) {
         this.symbol = symbol;
         this.amount = amount;
+        this.totalCostUSD = totalCostUSD;
     }
 
     public Long getId() {
@@ -36,11 +38,23 @@ public class Holding {
         this.amount = amount;
     }
 
-    public void addAmount(double delta) {
-        this.amount += delta;
+    public double getTotalCostUSD() {
+        return totalCostUSD;
+    }
+    public void setTotalCostUSD(double totalCostUSD) {
+        this.totalCostUSD = totalCostUSD;
+    }
+
+    public void addAmount(double amountToAdd, double usdCost) {
+        this.totalCostUSD += usdCost;
+        this.amount += amountToAdd;
     }
 
     public void subtractAmount(double delta) {
         this.amount -= delta;
+    }
+
+    public double getAverageBuyPrice() {
+        return amount == 0 ? 0 : totalCostUSD / amount;
     }
 }

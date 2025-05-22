@@ -20,22 +20,32 @@ public class TransactionDao {
     }
 
     private final RowMapper<Transaction> rowMapper = (rs, rowNum) -> {
-        Transaction t = new Transaction();
-        t.setId(rs.getLong("id"));
-        t.setAction(rs.getString("action"));
-        t.setSymbol(rs.getString("symbol"));
-        t.setAmountCrypto(rs.getDouble("amount_crypto"));
-        t.setPricePerUnit(rs.getDouble("price_per_unit"));
-        t.setTotalUSD(rs.getDouble("total_usd"));
-        t.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
-        return t;
+        Transaction tx = new Transaction();
+        tx.setId(rs.getLong("id"));
+        tx.setAction(rs.getString("action"));
+        tx.setSymbol(rs.getString("symbol"));
+        tx.setAmountCrypto(rs.getDouble("amount_crypto"));
+        tx.setPricePerUnit(rs.getDouble("price_per_unit"));
+        tx.setTotalUSD(rs.getDouble("total_usd"));
+        tx.setProfitOrLoss(rs.getObject("profit_or_loss", Double.class));
+        tx.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
+        return tx;
     };
 
     public void save(Transaction tx) {
-        jdbcTemplate.update("""
-            INSERT INTO transaction (action, symbol, amount_crypto, price_per_unit, total_usd, timestamp)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, tx.getAction(), tx.getSymbol(), tx.getAmountCrypto(), tx.getPricePerUnit(), tx.getTotalUSD(), Timestamp.valueOf(tx.getTimestamp()));
+        if (tx.getProfitOrLoss() == null) {
+            jdbcTemplate.update(
+                    "INSERT INTO transaction (action, symbol, amount_crypto, price_per_unit, total_usd, timestamp) VALUES (?, ?, ?, ?, ?, ?)",
+                    tx.getAction(), tx.getSymbol(), tx.getAmountCrypto(),
+                    tx.getPricePerUnit(), tx.getTotalUSD(), tx.getTimestamp()
+            );
+        } else {
+            jdbcTemplate.update(
+                    "INSERT INTO transaction (action, symbol, amount_crypto, price_per_unit, total_usd, profit_or_loss, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    tx.getAction(), tx.getSymbol(), tx.getAmountCrypto(),
+                    tx.getPricePerUnit(), tx.getTotalUSD(), tx.getProfitOrLoss(), tx.getTimestamp()
+            );
+        }
     }
 
     public List<Transaction> findAll() {

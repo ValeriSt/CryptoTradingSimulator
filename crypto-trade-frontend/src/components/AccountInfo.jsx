@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import './AccountInfo.css'
 
 function AccountInfo() {
   const [balance, setBalance] = useState(null);
@@ -17,7 +18,7 @@ function AccountInfo() {
   }, []);
 
   return (
-    <div style={{ marginBottom: "2rem" }}>
+    <div className="account-info" style={{ marginBottom: "2rem" }}>
       <h2>Account Info</h2>
       <p><strong>Balance:</strong> ${balance?.toFixed(2)}</p>
 
