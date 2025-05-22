@@ -108,7 +108,6 @@ public class AccountService {
         if (holding.getAmount() <= 0.000001) {
             holdingDao.delete(holding);
         } else {
-            // Reduce the totalCostUSD as well (proportional to amount sold)
             double costReduction = originalBuyPrice * amountToSell;
             holding.setTotalCostUSD(holding.getTotalCostUSD() - costReduction);
             holdingDao.save(holding);
