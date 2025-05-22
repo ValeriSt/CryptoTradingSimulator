@@ -98,14 +98,23 @@ npm run dev
 
 5. Screenshots of the application
 
-![Screenshot 2025-05-22 155237](https://github.com/user-attachments/assets/5acad1f4-d6d6-4279-b69c-f4bbf9608142)
-![Screenshot 2025-05-22 155148](https://github.com/user-attachments/assets/2e17c7f3-41f4-472a-b903-ef89a7a2c113)
-![Screenshot 2025-05-22 130728](https://github.com/user-attachments/assets/476fc8e9-527a-47c8-9697-7c4d6c2d2d91)
-![Screenshot 2025-05-22 130721](https://github.com/user-attachments/assets/2afe438c-eb0b-4d59-8576-3408f1da1865)
-![Screenshot 2025-05-22 130659](https://github.com/user-attachments/assets/79fc8166-0a03-4d65-9366-b7e44345c16a)
-![Screenshot 2025-05-22 130640](https://github.com/user-attachments/assets/bd6776ed-757f-4d78-8a5d-a55eeed6ffcc)
-![Screenshot 2025-05-22 130632](https://github.com/user-attachments/assets/b0f6b7e2-0cd0-43d0-9522-5580b07be68d)
-![Screenshot 2025-05-22 130602](https://github.com/user-attachments/assets/d4b5ec4e-a67a-45c5-a319-27cb22155f25)
-![Screenshot 2025-05-22 130540](https://github.com/user-attachments/assets/699c8f70-9bdd-4675-90e2-c9d87c86e054)
 ![Screenshot 2025-05-22 130533](https://github.com/user-attachments/assets/fd3bce08-3c1a-4806-85f8-69438e5bcabd)
+
+![Screenshot 2025-05-22 130540](https://github.com/user-attachments/assets/699c8f70-9bdd-4675-90e2-c9d87c86e054)
+
+![Screenshot 2025-05-22 130632](https://github.com/user-attachments/assets/b0f6b7e2-0cd0-43d0-9522-5580b07be68d)
+
+![Screenshot 2025-05-22 155237](https://github.com/user-attachments/assets/5acad1f4-d6d6-4279-b69c-f4bbf9608142)
+
+![Screenshot 2025-05-22 155148](https://github.com/user-attachments/assets/2e17c7f3-41f4-472a-b903-ef89a7a2c113)
+
+![Screenshot 2025-05-22 130602](https://github.com/user-attachments/assets/d4b5ec4e-a67a-45c5-a319-27cb22155f25)
+
+![Screenshot 2025-05-22 130728](https://github.com/user-attachments/assets/476fc8e9-527a-47c8-9697-7c4d6c2d2d91)
+
+![Screenshot 2025-05-22 130721](https://github.com/user-attachments/assets/2afe438c-eb0b-4d59-8576-3408f1da1865)
+
+![Screenshot 2025-05-22 130659](https://github.com/user-attachments/assets/79fc8166-0a03-4d65-9366-b7e44345c16a)
+
+![Screenshot 2025-05-22 130640](https://github.com/user-attachments/assets/bd6776ed-757f-4d78-8a5d-a55eeed6ffcc)
 
