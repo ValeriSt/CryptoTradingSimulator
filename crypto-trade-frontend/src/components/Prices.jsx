@@ -50,9 +50,7 @@ function Prices() {
               let className = "";
               if (diff > 0) className = "price-up";
               else if (diff < 0) className = "price-down";
-              console.log(
-                `${symbol} Prev: ${previous} Curr: ${current} Diff: ${diff}`
-              );
+
               return (
                 <tr key={symbol}>
                   <td>{symbol}</td>
